@@ -1,0 +1,4 @@
+---
+- import_tasks: setup_amq_streams.yml
+- import_tasks: setup_zookeeper.yml
+- import_tasks: setup_kafka.yml

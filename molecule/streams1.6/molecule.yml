@@ -1,0 +1,30 @@
+---
+dependency:
+  name: galaxy
+  options:
+    role-file: tests/requirements.yml
+driver:
+  name: docker
+platforms:
+  - name: instance
+    image: centos/systemd:latest
+    privileged: True
+    pre_build_image: true
+    command: "/usr/sbin/init"
+provisioner:
+  name: ansible
+  playbooks:
+    prepare: ../resources/prepare.yml
+  inventory:
+    group_vars:
+      all:
+        transfer_method: csp-to-host
+        rhn_username: ${RHN_USERNAME}
+        rhn_password: ${RHN_PASSWORD}
+        amq_streams_version: '1.6.0'
+        amq_streams_kafka_configurations:
+          listeners: 'CLIENT://localhost:{{ 9092 + (amq_streams_port_offset|int) }}'
+          listener.security.protocol.map: 'CLIENT:PLAINTEXT'
+          inter.broker.listener.name: 'CLIENT'  
+verifier:
+  name: ansible

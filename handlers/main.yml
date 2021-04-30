@@ -1,0 +1,29 @@
+---
+- name: Systemd reload
+  service:
+    daemon_reexec: yes
+
+- name: Restart zookeeper
+  service:
+    name: "{{ amq_streams_zookeeper_service_name }}"
+    state: restarted
+  notify:
+    - Verify Zookeeper is running
+
+- name: Verify Zookeeper is running
+  wait_for: port="{{ amq_streams_zookeeper_client_port }}"
+
+- name: Restart kafka
+  service:
+    name: "{{ amq_streams_kafka_service_name }}"
+    state: restarted
+  notify:
+    - Verify Kafka is running
+
+- name: Verify Kafka is running
+  wait_for:
+    host: "{{ item | urlsplit('hostname') }}"
+    port: "{{ item | urlsplit('port') }}"
+    timeout: 120
+  with_items:
+    - '{{ amq_streams_kafka_configurations.listeners.split(",") }}'

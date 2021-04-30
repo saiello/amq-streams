@@ -1,0 +1,38 @@
+---
+- name: Create Zookeeper working directories
+  file:
+    path: "{{ item }}"
+    owner: "{{ amq_streams_user }}"
+    group: "{{ amq_streams_group }}"
+    state: directory
+  with_items:
+    - "{{ amq_streams_zookeeper_base_dir }}"
+
+
+- name: Create Zookeeper Configuration file
+  template:
+    src: zookeeper.properties.j2
+    dest: "{{ amq_streams_zookeeper_config_file }}"
+    owner: "{{ amq_streams_user }}"
+    group: "{{ amq_streams_group }}"
+  notify:
+    - Restart zookeeper
+  tags:
+    - configure
+
+
+- name: Create Zookeeper Service file
+  template:
+    src: zookeeper.service.j2
+    dest: "{{ amq_streams_zookeeper_service_file }}"
+  notify:
+    - Systemd reload
+    - Restart zookeeper
+  tags:
+    - configure
+
+
+- name: Enable Zookeeper Service
+  service:
+    name: "{{ amq_streams_zookeeper_service_name }}"
+    enabled: yes

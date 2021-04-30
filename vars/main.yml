@@ -1,0 +1,10 @@
+
+amq_streams_versions:
+
+  '1.7.0':
+    dirname: 'kafka_2.12-2.7.0.redhat-00005'
+    softwareId: 96911
+
+  '1.6.0':
+    dirname: 'kafka_2.12-2.6.0.redhat-00004'
+    softwareId: 90741

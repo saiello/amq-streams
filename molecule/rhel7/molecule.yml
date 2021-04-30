@@ -1,0 +1,33 @@
+---
+dependency:
+  name: galaxy
+  options:
+    role-file: tests/requirements.yml
+
+driver:
+  name: vagrant
+  provider:
+    name: virtualbox
+
+platforms:
+  - name: instance
+    box: generic/rhel7
+    memory: 2048
+    cpus: 2
+
+provisioner:
+  name: ansible
+  inventory:
+    group_vars:
+      all:
+        transfer_method: csp-to-host
+        rhn_username: ${RHN_USERNAME}
+        rhn_password: ${RHN_PASSWORD}
+
+        amq_streams_kafka_configurations:
+          listeners: 'CLIENT://localhost:{{ 9092 + (amq_streams_port_offset|int) }}'
+          listener.security.protocol.map: 'CLIENT:PLAINTEXT'
+          inter.broker.listener.name: 'CLIENT'
+
+verifier:
+  name: ansible

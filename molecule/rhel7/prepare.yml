@@ -1,0 +1,24 @@
+---
+- name: Prepare
+  hosts: all
+  become: yes
+  tasks:
+  - name: Register red_hat subscription
+    community.general.redhat_subscription:
+      state: present
+      username: "{{ rhn_username }}"
+      password: "{{ rhn_password }}"
+      auto_attach: true
+
+  - name: Install required libs
+    package:
+      name: "{{ item }}"
+      state: present
+    with_items:
+      - unzip
+      - python2-pip
+      - java-1.8.0-openjdk-devel
+
+  - name: Install python packages
+    pip:
+      name: requests

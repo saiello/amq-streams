@@ -1,0 +1,3 @@
+roles:
+  - redhat-cop.jboss-common
+  - sabre1041.redhat-csp-download

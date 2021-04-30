@@ -1,0 +1,32 @@
+---
+- name: Create Kafka working directories
+  file:
+    path: "{{ item }}"
+    owner: "{{ amq_streams_user }}"
+    group: "{{ amq_streams_group }}"
+    state: directory
+  with_items:
+    - "{{ amq_streams_kafka_base_dir }}"
+    - "{{ amq_streams_config_dir }}"
+    - "{{ amq_streams_log_dir }}"
+
+- name: Create Kafka Configuration file
+  template:
+    src: server.properties.j2
+    dest: "{{ amq_streams_kafka_config_file }}"
+    owner: "{{ amq_streams_user }}"
+    group: "{{ amq_streams_group }}"
+  notify:
+    - Restart kafka
+  tags:
+    - configure
+
+- name: Create Kafka Service file
+  template:
+    src: kafka.service.j2
+    dest: "{{ amq_streams_kafka_service_file }}"
+  notify:
+    - Systemd reload
+    - Restart kafka
+  tags:
+    - configure

@@ -1,0 +1,57 @@
+---
+- name: Fail for Missing Transfer Method
+  fail:
+    msg: "This role requires transfer_method to be set and non empty. See the README"
+  when: transfer_method is not defined or transfer_method | length == 0
+
+- name: Fail for Missing Red Hat Network Username
+  fail:
+    msg: This role requires rhn_username to be set and non empty."
+  when: transfer_method == 'csp-to-host' and (rhn_username is not defined or rhn_username | length == 0)
+
+- name: Fail for Missing Red Hat Network Password
+  fail:
+    msg: "This role requires rhn_password to be set and non empty."
+  when: transfer_method == 'csp-to-host' and (rhn_password is not defined or rhn_password | length == 0)
+
+- name: Add kafka group
+  group:
+    name: "{{ amq_streams_group }}"
+    state: present
+
+- name: Add kafka user
+  user:
+    name: "{{ amq_streams_user }}"
+    groups: "{{ amq_streams_group }}"
+    password: "{{ amq_streams_password | default(omit) }}"
+  when: amq_streams_create_user
+
+- name: Create setup directory
+  file:
+    path: "{{ amq_streams_setup_dir }}"
+    owner: "{{ amq_streams_user }}"
+    group: "{{ amq_streams_group }}"
+    state: directory
+
+- name: Copy Red Hat AMQ Streams from Red Hat Customer Portal
+  redhat_csp_download:
+    url: "{{ amq_streams_artifact_url }}"
+    dest: "{{ amq_streams_setup_dir }}/{{ amq_streams_artifact_name }}"
+    username: "{{ rhn_username }}"
+    password: "{{ rhn_password }}"
+  when: transfer_method == 'csp-to-host'
+
+- name: Copy Red Hat AMQ Streams from controller
+  copy:
+    src: "{{ amq_streams_artifact_name }}"
+    dest: "{{ amq_streams_setup_dir }}/{{ amq_streams_artifact_name }}"
+  when: transfer_method == 'copy-from-controller'
+
+- name: Extract Red Hat AMQ Streams
+  unarchive:
+    src: "{{ amq_streams_setup_dir }}/{{ amq_streams_artifact_name }}"
+    dest: "{{ amq_streams_setup_dir }}"
+    copy: no
+    creates: "{{ amq_streams_home_dir }}"
+    owner: "{{ amq_streams_user }}"
+    group: "{{ amq_streams_group }}"

@@ -1,0 +1,23 @@
+---
+
+allow_duplicates: true
+
+galaxy_info:
+  role_name: amq_streams
+  namespace: saiello
+  author: Simone Aiello
+  description: Install AMQ Streams
+  license: Apache License 2.0
+  min_ansible_version: 3.3
+  platforms:
+    - name: EL
+      versions:
+        - 7
+        - 8
+  galaxy_tags:
+    - development
+    - packaging
+    - system
+dependencies: [
+  'sabre1041.redhat-csp-download'
+]
