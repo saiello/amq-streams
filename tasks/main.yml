@@ -1,4 +1,5 @@
 ---
 - import_tasks: setup_amq_streams.yml
 - import_tasks: setup_zookeeper.yml
+  when: setup_zookeeper_only is defined
 - import_tasks: setup_kafka.yml

@@ -1,4 +1,19 @@
 ---
+
+- name: Set Zookeeper config dir
+  set_fact:
+    amq_streams_zookeeper_config_dir: "{{ amq_streams_home_dir }}/config"
+  when: amq_streams_zookeeper_config_dir is not defined
+
+- name: Set Zookeeper log dir
+  set_fact:
+    amq_streams_zookeeper_log_dir: "{{ amq_streams_home_dir }}/logs"
+  when: amq_streams_zookeeper_log_dir is not defined
+
+- name: Set Zookeeper log config file
+  set_fact:
+    amq_streams_zookeeper_config_file: "{{ amq_streams_zookeeper_config_dir }}/{{ amq_streams_zookeeper_config_file_name }}"
+
 - name: Create Zookeeper working directories
   file:
     path: "{{ item }}"
@@ -7,6 +22,8 @@
     state: directory
   with_items:
     - "{{ amq_streams_zookeeper_base_dir }}"
+    - "{{ amq_streams_zookeeper_log_dir }}"
+    - "{{ amq_streams_zookeeper_config_dir }}"
 
 
 - name: Create Zookeeper Configuration file

@@ -17,13 +17,6 @@ amq_streams_artifact_name: amq-streams-{{ amq_streams_version }}-bin.zip
 amq_streams_setup_dir: /opt/kafka
 amq_streams_home_dir: "{{ amq_streams_setup_dir }}/{{ amq_streams_home_dirname }}"
 
-#amq_streams_config_dir: "/etc/{{ amq_streams_kafka_service_name }}/config"
-#amq_streams_log_dir: "/var/log/{{ amq_streams_kafka_service_name }}"
-#amq_streams_zookeeper_log_dir: "/var/log/{{ amq_streams_zookeeper_service_name }}"
-
-amq_streams_config_dir: "{{ amq_streams_home_dir }}/config"
-amq_streams_log_dir: "{{ amq_streams_home_dir }}/logs"
-
 amq_streams_kafka_environ: {}
 
 amq_streams_dest: /opt
@@ -34,7 +27,6 @@ amq_streams_zookeeper_client_port: "{{ 2181 + (amq_streams_port_offset | int) }}
 amq_streams_zookeeper_service_file_name: "{{ amq_streams_zookeeper_service_name }}.service"
 amq_streams_zookeeper_service_file: /usr/lib/systemd/system/{{ amq_streams_zookeeper_service_file_name }}
 amq_streams_zookeeper_config_file_name: "{{  amq_streams_zookeeper_service_name }}.properties"
-amq_streams_zookeeper_config_file: "{{ amq_streams_config_dir }}/{{ amq_streams_zookeeper_config_file_name }}"
 amq_streams_zookeeper_base_dir: /var/lib/{{ amq_streams_zookeeper_service_name }}
 
 amq_streams_kafka_base_dir: /var/lib/{{ amq_streams_kafka_service_name }}
@@ -42,7 +34,6 @@ amq_streams_kafka_service_name: kafka
 amq_streams_kafka_service_file_name: "{{ amq_streams_kafka_service_name }}.service"
 amq_streams_kafka_service_file: /usr/lib/systemd/system/{{ amq_streams_kafka_service_file_name }}
 amq_streams_kafka_config_file_name: server.properties
-amq_streams_kafka_config_file: "{{ amq_streams_config_dir }}/{{ amq_streams_kafka_config_file_name }}"
 amq_streams_kafka_zookeeper_connect: localhost:2181
 amq_streams_kafka_broker_id: 0
 amq_streams_kafka_configurations: {}

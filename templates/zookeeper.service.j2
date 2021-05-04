@@ -7,7 +7,7 @@ Group={{ amq_streams_group }}
 
 Type=forking
 Environment=JAVA_HOME={{ amq_streams_java_home }}
-Environment=LOG_DIR={{ amq_streams_log_dir }}
+Environment=LOG_DIR={{ amq_streams_zookeeper_log_dir }}
 ExecStart={{ amq_streams_home_dir }}/bin/zookeeper-server-start.sh -daemon {{ amq_streams_zookeeper_config_file }}
 
 [Install]

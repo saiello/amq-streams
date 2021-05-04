@@ -1,4 +1,22 @@
 ---
+#amq_streams_kafka_config_dir: "/etc/{{ amq_streams_kafka_service_name }}/config"
+#amq_streams_kafka_log_dir: "/var/log/{{ amq_streams_kafka_service_name }}"
+#amq_streams_zookeeper_log_dir: "/var/log/{{ amq_streams_zookeeper_service_name }}"
+
+- name: Set Kafka config dir
+  set_fact:
+    amq_streams_kafka_config_dir: "{{ amq_streams_home_dir }}/config"
+  when: amq_streams_kafka_config_dir is not defined
+
+- name: Set Kafka log config file
+  set_fact:
+    amq_streams_kafka_config_file: "{{ amq_streams_kafka_config_dir }}/{{ amq_streams_kafka_config_file_name }}"
+
+- name: Set Kafka log dir
+  set_fact:
+    amq_streams_kafka_log_dir: "{{ amq_streams_home_dir }}/logs"
+  when: amq_streams_kafka_log_dir is not defined
+
 - name: Create Kafka working directories
   file:
     path: "{{ item }}"
@@ -7,8 +25,8 @@
     state: directory
   with_items:
     - "{{ amq_streams_kafka_base_dir }}"
-    - "{{ amq_streams_config_dir }}"
-    - "{{ amq_streams_log_dir }}"
+    - "{{ amq_streams_kafka_config_dir }}"
+    - "{{ amq_streams_kafka_log_dir }}"
 
 - name: Create Kafka Configuration file
   template:
@@ -28,8 +46,8 @@
 
 - name: Set LOG_DIR environment variable
   set_fact:
-    amq_streams_kafka_environ: '{{ amq_streams_kafka_environ | combine({ "LOG_DIR" : amq_streams_log_dir }) }}'
-  when: amq_streams_log_dir is defined
+    amq_streams_kafka_environ: '{{ amq_streams_kafka_environ | combine({ "LOG_DIR" : amq_streams_kafka_log_dir }) }}'
+  when: amq_streams_kafka_log_dir is defined
 
 - name: Create Kafka Service file
   template:
