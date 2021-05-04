@@ -21,6 +21,16 @@
   tags:
     - configure
 
+- name: Set JAVA_HOME environment variable
+  set_fact:
+    amq_streams_kafka_environ: '{{ amq_streams_kafka_environ | combine({ "JAVA_HOME" : amq_streams_java_home }) }}'
+  when: amq_streams_java_home is defined
+
+- name: Set LOG_DIR environment variable
+  set_fact:
+    amq_streams_kafka_environ: '{{ amq_streams_kafka_environ | combine({ "LOG_DIR" : amq_streams_log_dir }) }}'
+  when: amq_streams_log_dir is defined
+
 - name: Create Kafka Service file
   template:
     src: kafka.service.j2

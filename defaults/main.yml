@@ -24,6 +24,8 @@ amq_streams_home_dir: "{{ amq_streams_setup_dir }}/{{ amq_streams_home_dirname }
 amq_streams_config_dir: "{{ amq_streams_home_dir }}/config"
 amq_streams_log_dir: "{{ amq_streams_home_dir }}/logs"
 
+amq_streams_kafka_environ: {}
+
 amq_streams_dest: /opt
 
 amq_streams_zookeeper_service_name: zookeeper
@@ -43,7 +45,7 @@ amq_streams_kafka_config_file_name: server.properties
 amq_streams_kafka_config_file: "{{ amq_streams_config_dir }}/{{ amq_streams_kafka_config_file_name }}"
 amq_streams_kafka_zookeeper_connect: localhost:2181
 amq_streams_kafka_broker_id: 0
-amq_streams_kafka_configurations: '{}'
+amq_streams_kafka_configurations: {}
 
 
 amq_streams_port_offset: 0
