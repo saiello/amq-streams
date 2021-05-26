@@ -1,6 +1,20 @@
 dataDir={{ amq_streams_zookeeper_base_dir }}
 
+
+{% if amq_streams_zookeeper_id is not defined -%}
 clientPort={{ amq_streams_zookeeper_client_port }}
+{% else -%}
+initLimit=5
+syncLimit=2
+reconfigEnabled=false
+standaloneEnabled=false
+
+{% for server in amq_streams_zookeeper_server_list %}
+server.{{ server.id }}={{ server.address }}:{{ server.port1 }}:{{ server.port2 }}:{{ server.role }};{{ server.address }}:{{ server.client_port }}
+{% endfor %}
+{% endif -%}
 
 maxClientCnxns=0
 admin.enableServer=false
+
+4lw.commands.whitelist=stat

@@ -28,6 +28,15 @@
     - "{{ amq_streams_kafka_config_dir }}"
     - "{{ amq_streams_kafka_log_dir }}"
 
+
+- include_tasks: set_zookeeper_facts.yml
+  when: amq_streams_kafka_zookeeper_connect is not defined
+
+- name: Set Kafka Zookeeper connect property
+  set_fact:
+    amq_streams_kafka_zookeeper_connect: "{{ amq_streams_zookeeper_server_list | map(attribute='client_host_port') | list | join(',') }}"
+  when: amq_streams_kafka_zookeeper_connect is not defined
+
 - name: Create Kafka Configuration file
   template:
     src: server.properties.j2

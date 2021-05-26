@@ -22,6 +22,7 @@ provisioner:
         rhn_username: ${RHN_USERNAME}
         rhn_password: ${RHN_PASSWORD}
         amq_streams_version: '1.6.0'
+        amq_streams_kafka_zookeeper_connect: localhost:2181
         amq_streams_kafka_configurations:
           listeners: 'CLIENT://localhost:{{ 9092 + (amq_streams_port_offset|int) }}'
           listener.security.protocol.map: 'CLIENT:PLAINTEXT'

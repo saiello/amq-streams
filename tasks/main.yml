@@ -1,5 +1,8 @@
 ---
 - import_tasks: setup_amq_streams.yml
+
 - import_tasks: setup_zookeeper.yml
-  when: setup_zookeeper_only is defined
+  when: amq_streams_kafka_only is undefined or not amq_streams_kafka_only
+
 - import_tasks: setup_kafka.yml
+  when: amq_streams_zookeeper_only is undefined or not amq_streams_zookeeper_only

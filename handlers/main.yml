@@ -11,7 +11,9 @@
     - Verify Zookeeper is running
 
 - name: Verify Zookeeper is running
-  wait_for: port="{{ amq_streams_zookeeper_client_port }}"
+  wait_for:
+    host: "{{ amq_streams_zookeeper_client_port_address | default('localhost') }}"
+    port: "{{ amq_streams_zookeeper_client_port }}"
 
 - name: Restart kafka
   service:

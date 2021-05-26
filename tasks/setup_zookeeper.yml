@@ -26,6 +26,24 @@
     - "{{ amq_streams_zookeeper_config_dir }}"
 
 
+- name: Set Zookeeper variables as facts
+  set_fact:
+    amq_streams_zookeeper_client_port: "{{ amq_streams_zookeeper_client_port }}"
+    amq_streams_zookeeper_client_port_address: "{{ ansible_facts[amq_streams_zookeeper_interface_name]['ipv4']['address'] }}" # TODO extract interface var
+    amq_streams_zookeeper_configuration_port1: "{{ amq_streams_zookeeper_configuration_port1 }}"
+    amq_streams_zookeeper_configuration_port2: "{{ amq_streams_zookeeper_configuration_port2 }}"
+    amq_streams_zookeeper_configuration_role: "{{ amq_streams_zookeeper_configuration_role }}"
+  when: amq_streams_zookeeper_id is defined
+
+- name: Create Zookeeper MyId file
+  copy:
+    dest: "{{ amq_streams_zookeeper_base_dir }}/myid"
+    content: "{{ amq_streams_zookeeper_id }}"
+  when: amq_streams_zookeeper_id is defined
+
+- include_tasks: set_zookeeper_facts.yml
+  when: amq_streams_zookeeper_id is defined
+
 - name: Create Zookeeper Configuration file
   template:
     src: zookeeper.properties.j2

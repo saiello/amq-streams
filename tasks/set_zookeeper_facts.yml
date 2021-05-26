@@ -1,0 +1,27 @@
+
+- name: Gather delegated facts from Zookeeper host group
+  setup: 
+    gather_subset: network
+  delegate_to: "{{ item }}"
+  delegate_facts: True
+  with_items:
+    - "{{ groups[amq_streams_zookeeper_hosts_group_name] }}"
+
+- name: Set Zookeeper server connection fact
+  set_fact: 
+    zookeeper_server_fact: {
+      'port1': "{{ hostvars[item]['amq_streams_zookeeper_configuration_port1'] }}",
+      'port2': "{{ hostvars[item]['amq_streams_zookeeper_configuration_port2'] }}",
+      'client_port': "{{ hostvars[item]['amq_streams_zookeeper_client_port'] }}",
+      'client_host_port': "{{ hostvars[item]['amq_streams_zookeeper_client_port_address'] }}:{{ hostvars[item]['amq_streams_zookeeper_client_port'] }}",
+      'role': "{{ hostvars[item]['amq_streams_zookeeper_configuration_role'] }}",
+      'address': "{{ hostvars[item]['amq_streams_zookeeper_client_port_address'] }}",
+      'id': "{{ hostvars[item]['amq_streams_zookeeper_id'] }}"
+    }
+  register: zookeeper_server_facts
+  with_items:
+    - "{{ groups[amq_streams_zookeeper_hosts_group_name] }}"
+
+- name: Set Zookeeper ensemble server list
+  set_fact:
+    amq_streams_zookeeper_server_list: "{{ zookeeper_server_facts.results | map(attribute='ansible_facts.zookeeper_server_fact') | list }}"
