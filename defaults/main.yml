@@ -30,6 +30,7 @@ amq_streams_zookeeper_config_file_name: "{{  amq_streams_zookeeper_service_name 
 amq_streams_zookeeper_base_dir: /var/lib/{{ amq_streams_zookeeper_service_name }}
 amq_streams_zookeeper_hosts_group_name: 'all'
 amq_streams_zookeeper_interface_name: 'eth0'
+amq_streams_zookeeper_id: 0
 
 amq_streams_zookeeper_configuration_port1: 2888
 amq_streams_zookeeper_configuration_port2: 3888

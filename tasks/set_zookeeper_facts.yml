@@ -1,7 +1,6 @@
 
 - name: Gather delegated facts from Zookeeper host group
-  setup: 
-    gather_subset: network
+  setup:
   delegate_to: "{{ item }}"
   delegate_facts: True
   with_items:

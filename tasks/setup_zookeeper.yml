@@ -33,6 +33,7 @@
     amq_streams_zookeeper_configuration_port1: "{{ amq_streams_zookeeper_configuration_port1 }}"
     amq_streams_zookeeper_configuration_port2: "{{ amq_streams_zookeeper_configuration_port2 }}"
     amq_streams_zookeeper_configuration_role: "{{ amq_streams_zookeeper_configuration_role }}"
+    amq_streams_zookeeper_id: "{{ amq_streams_zookeeper_id }}"
   when: amq_streams_zookeeper_id is defined
 
 - name: Create Zookeeper MyId file
