@@ -34,7 +34,7 @@
     state: directory
 
 - name: Copy Red Hat AMQ Streams from Red Hat Customer Portal
-  redhat_csp_download:
+  middleware_automation.redhat_csp_download.redhat_csp_download:
     url: "{{ amq_streams_artifact_url }}"
     dest: "{{ amq_streams_setup_dir }}/{{ amq_streams_artifact_name }}"
     username: "{{ rhn_username }}"

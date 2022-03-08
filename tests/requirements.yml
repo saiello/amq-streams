@@ -1,3 +1,5 @@
 roles:
   - redhat-cop.jboss-common
-  - sabre1041.redhat-csp-download
+
+collections:
+  - git+https://github.com/ansible-middleware/redhat-csp-download,v1.2.1

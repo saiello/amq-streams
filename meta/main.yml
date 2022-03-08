@@ -18,6 +18,3 @@ galaxy_info:
     - development
     - packaging
     - system
-dependencies: [
-  'sabre1041.redhat-csp-download'
-]
