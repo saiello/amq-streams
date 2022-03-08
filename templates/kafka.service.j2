@@ -6,14 +6,14 @@ User={{ amq_streams_user }}
 Group={{ amq_streams_group }}
 
 
-Type=forking
 {% if amq_streams_kafka_environ -%}
 {% for name, value in amq_streams_kafka_environ.items() -%}
 Environment={{ name }}={{ value }}
 {% endfor %}
 {% endif %}
 
-ExecStart={{ amq_streams_home_dir }}/bin/kafka-server-start.sh -daemon {{ amq_streams_kafka_config_file }}
+ExecStart={{ amq_streams_home_dir }}/bin/kafka-server-start.sh {{ amq_streams_kafka_config_file }}
+ExecStop={{ amq_streams_home_dir }}/bin/kafka-server-stop.sh
 
 [Install]
 WantedBy=multi-user.target
